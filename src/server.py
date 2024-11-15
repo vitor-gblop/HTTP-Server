@@ -6,7 +6,7 @@ import os
 # Configurações do servidor
 HOST_ = 'localhost'
 PORT_ = 8082
-DIRECTORY = 'C:/Users/dayla/Documents/Arquivos/Python/httpServer/src'
+DIRECTORY = '[DIRETORIO]'
 
 
 def get_directory_last_name(caminho):
