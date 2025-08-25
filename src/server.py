@@ -6,7 +6,7 @@ import os
 # Configurações do servidor
 HOST_ = 'localhost'
 PORT_ = 8082
-DIRECTORY = os.getcwd() + "/src/files"
+DIRECTORY = os.getcwd() + "/src/server"
 
 
 def get_directory_last_name(caminho):
@@ -212,12 +212,14 @@ def startServer(host='localhost', port=8082, dir='.'):
     os.chdir(dir)  # Define o diretório raiz do servidor
 
     with socketserver.TCPServer((host, port), CustomHandler) as httpd:
-        print(f"Servidor HTTP iniciado na porta {port}, servindo o diretório {dir}")
-        print(f"Acesse http://{host}:{port} para ver os arquivos.")
+        print(f"\nServidor HTTP iniciado na porta {port}, servindo o diretório {dir}")
+        print(f"\nAcesse http://{host}:{port} para ver os arquivos.")
         httpd.serve_forever()
+
 
 # Evita chamamentos acidentais
 if __name__ == "__main__":
-    HOST_ = input("Endereço do servidor(padrão): ") or HOST_
-    PORT_= int(input("Porta para o servidor: ") or PORT_)
+    HOST_ = input("Endereço do servidor(padrão:localhost): ") or HOST_
+    PORT_= int(input("Porta para o servidor(padão:8082): ") or PORT_)
+    
     startServer(HOST_, PORT_, DIRECTORY)
