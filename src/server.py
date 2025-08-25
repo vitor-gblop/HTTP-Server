@@ -7,6 +7,7 @@ import os
 HOST_ = 'localhost'
 PORT_ = 8082
 DIRECTORY = os.getcwd() + "/src/server"
+CSS_PATH = "http://localhost:8082/_views/style.css"
 
 
 def get_directory_last_name(caminho):
@@ -39,73 +40,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         <head>
             <meta charset="utf-8">
             <title>Lista de Arquivos e Diretórios</title>
-            <style>
-                body {{
-                    font-family: Arial, sans-serif;
-                    background-color: #f0f0f0;
-                    color: #333;
-                    padding: 20px;
-                }}
-                header{{
-                    font-size: 1.5rem;
-                    display: flex;
-                    justify-content: space-between;
-                }}
-                header nav{{
-                    display: flex;
-                    gap: 10px;
-                    width: 40%;
-                }}
-                header nav a{{
-                    font-size: 1.2rem;
-                    padding:4px;
-                    background: #fff;
-                    border: 1px solid #ddd;
-                }}
-                h1 {{
-                    font-size: larger;
-                    color: #5a5a5a;
-                }}
-                ul {{
-                    list-style-type: none;
-                    padding: 0;
-                }}
-                li {{
-                    display: flex;
-                    justify-content: space-between;
-                    font-size: 1.2rem;
-                    padding: 10px;
-                    background: #fff;
-                    border: 1px solid #ddd;
-                    margin-bottom: 5px;
-                }}
-                a {{
-                    display: inline-block;
-                    color: #007bff;
-                    text-decoration: none;
-                    margin-right: 10px;
-                }}
-                a:hover {{
-                    text-decoration: underline;
-                }}
-                form {{
-                    display: inline-block;
-                }}
-                button {{
-                    background: #ff4d4d;
-                    border: none;
-                    color: white;
-                    cursor: pointer;
-                    padding: 5px 10px;
-                    margin-left: 10px;
-                }}
-                .form-section{{
-                    padding: 12px;
-                    background: #fff;
-                    border: 1px solid #ddd;
-                    margin-bottom: 5px;
-                }}
-            </style>
+            <link rel='stylesheet' href='{CSS_PATH}'>
+            
         </head>
         <body>
             <header>
@@ -126,7 +62,12 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             fullname = os.path.join(path, nome)
             display_name = nome
             linkname = nome
-
+            
+            # evita que arquivos e pastas iniciados com _ sejam mostrados
+            if display_name.startswith('_'):
+                continue
+            
+            
             # Adiciona links para os arquivos e diretórios com opção de remover
             response_content += f'''
             <li>
@@ -214,6 +155,7 @@ def startServer(host='localhost', port=8082, dir='.'):
     with socketserver.TCPServer((host, port), CustomHandler) as httpd:
         print(f"\nServidor HTTP iniciado na porta {port}, servindo o diretório {dir}")
         print(f"\nAcesse http://{host}:{port} para ver os arquivos.")
+        
         httpd.serve_forever()
 
 
