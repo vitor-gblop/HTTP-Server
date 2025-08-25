@@ -6,7 +6,7 @@ import os
 # Configurações do servidor
 HOST_ = 'localhost'
 PORT_ = 8082
-DIRECTORY = '[DIRETORIO]'
+DIRECTORY = os.getcwd() + "/src/files"
 
 
 def get_directory_last_name(caminho):
@@ -218,6 +218,6 @@ def startServer(host='localhost', port=8082, dir='.'):
 
 # Evita chamamentos acidentais
 if __name__ == "__main__":
-    HOST_ = input("Endereço do servidor: ") or HOST_
+    HOST_ = input("Endereço do servidor(padrão): ") or HOST_
     PORT_= int(input("Porta para o servidor: ") or PORT_)
     startServer(HOST_, PORT_, DIRECTORY)
