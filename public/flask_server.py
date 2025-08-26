@@ -5,11 +5,13 @@ from flask_cors import CORS # Importar a biblioteca CORS
 
 # --- Configurações do Servidor ---
 # Altere estas variáveis para configurar seu servidor
-HOST_ = 'localhost'
+HOST_ = '0.0.0.0'
 PORT_ = 8082
 # O diretório que o Flask irá servir.
 # Por segurança, o servidor só permitirá acesso a arquivos dentro deste diretório.
-ROOT_DIRECTORY = os.path.abspath(os.path.join(os.getcwd(), "src", "server"))
+print("Diretório atual:", os.getcwd())
+ROOT_DIRECTORY = os.path.abspath(os.path.join(os.getcwd(), "public", "src", "server"))
+# ROOT_DIRECTORY = os.path.abspath("D:/VIDEOS")
 
 app = Flask(__name__)
 CORS(app) # Habilitar CORS para o aplicativo Flask
@@ -23,8 +25,9 @@ HTML_TEMPLATE = """
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="refresh" content="5">
     <title>Flask File Server</title>
-    <link rel='stylesheet' href='http://localhost:8082/_views/style.css'>
+    <link rel='stylesheet' href={{ url_for('static', filename='style.css') }}>
     
 </head>
 <body>
