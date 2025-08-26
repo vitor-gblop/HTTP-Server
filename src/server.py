@@ -39,13 +39,13 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         <html lang="pt-br">
         <head>
             <meta charset="utf-8">
+            <meta http-equiv="refresh" content="5">
             <title>Lista de Arquivos e Diretórios</title>
             <link rel='stylesheet' href='{CSS_PATH}'>
-            
         </head>
         <body>
             <header>
-                <a href="/" ><span>SERVER</span></a>
+                <a href="/" ><span>FAST SERVER</span></a>
                 <nav>
                     <a href="../">voltar</a>
                     <a href="#new_folder">nova pasta</a>
@@ -66,6 +66,10 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             # evita que arquivos e pastas iniciados com _ sejam mostrados
             if display_name.startswith('_'):
                 continue
+            
+            if os.path.isdir(fullname):
+                display_name = nome + "/"
+                linkname = nome + "/"
             
             
             # Adiciona links para os arquivos e diretórios com opção de remover
@@ -146,7 +150,40 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
                 self.wfile.write(f"Erro ao remover o item: {str(e)}. Verifique se o diretório está vazio.".encode('utf-8'))
             return
 
-        # Código existente para upload e criação de diretórios permanece aqui
+        # Verifica se a requisição é para criar um novo diretório
+        if 'dirname' in params:
+            dirname = params['dirname'][0]
+            
+            # Evita nomes de diretório maliciosos
+            if '/' in dirname or '\\' in dirname or dirname.startswith('_'):
+                self.send_response(400, "Bad Request")
+                self.end_headers()
+                self.wfile.write("Nome de diretório inválido".encode('utf-8'))
+                return
+            
+            # Cria o caminho completo do novo diretório
+            new_dir_path = os.path.join(DIRECTORY, self.path.lstrip('/'), dirname)
+            
+            try:
+                os.makedirs(new_dir_path)
+                mensagem = (f"Diretório '{dirname}' criado com sucesso.")
+                
+                self.send_response(200, "OK")
+                self.send_header("Location", self.path)
+                self.end_headers()
+                self.wfile.write(mensagem.encode('utf-8'))
+                
+            except FileExistsError:
+                self.send_response(409, "Conflict")
+                self.end_headers()
+                self.wfile.write(f"Erro: O diretório '{dirname}' já existe.".encode('utf-8'))
+                
+            except OSError as e:
+                self.send_response(500, "Internal Server Error")
+                self.end_headers()
+                self.wfile.write(f"Erro ao criar diretório: {str(e)}".encode('utf-8'))
+            return
+
 
 # Método que configura o diretório e inicia o servidor
 def startServer(host='localhost', port=8082, dir='.'):
@@ -161,7 +198,14 @@ def startServer(host='localhost', port=8082, dir='.'):
 
 # Evita chamamentos acidentais
 if __name__ == "__main__":
-    HOST_ = input("Endereço do servidor(padrão:localhost): ") or HOST_
-    PORT_= int(input("Porta para o servidor(padão:8082): ") or PORT_)
     
-    startServer(HOST_, PORT_, DIRECTORY)
+    print(f"\nEndereço ip do servidor(padrão:localhost): ")
+    HOST_ = input("Especifique o endereço do servidor ou clique enter para o padrão: ") or HOST_
+    
+    print(f"\nPorta para o servidor(padrão:8082): ")
+    PORT_= int(input("Especifique o endereço do servidor ou clique enter para o padrão: ") or PORT_)
+    
+    print(f"\nCaminho do diretório a ser servido(padrão:{DIRECTORY}): ")
+    DIRECTORY_ = input(f"Especifique o diretorio ou clique enter para o padrão: ") or DIRECTORY
+    
+    startServer(HOST_, PORT_, DIRECTORY_)
