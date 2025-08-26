@@ -142,9 +142,3 @@ li button:hover {
 .form-section input[type=text] {
     padding: 0.5rem;
 }
-
-@media (max-width: 600px) {
-    * {
-        font-size: x-large;
-    }
-}
