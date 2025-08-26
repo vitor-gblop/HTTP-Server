@@ -1,6 +1,7 @@
 import os
 import shutil
 from flask import Flask, render_template_string, request, redirect, send_from_directory, abort, url_for
+from flask_cors import CORS # Importar a biblioteca CORS
 
 # --- Configurações do Servidor ---
 # Altere estas variáveis para configurar seu servidor
@@ -11,9 +12,11 @@ PORT_ = 8082
 ROOT_DIRECTORY = os.path.abspath(os.path.join(os.getcwd(), "src", "server"))
 
 app = Flask(__name__)
+CORS(app) # Habilitar CORS para o aplicativo Flask
+
 
 # --- Template HTML com Jinja2 ---
-# Usamos um template para gerar o HTML, o que é mais limpo e seguro.
+# Template para gerar o HTML, o que é mais limpo e seguro.
 # As variáveis entre {{ }} são preenchidas pelo Flask.
 HTML_TEMPLATE = """
 <!DOCTYPE html>
