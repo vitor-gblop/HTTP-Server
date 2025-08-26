@@ -20,12 +20,14 @@ CORS(app) # Habilitar CORS para o aplicativo Flask
 # --- Template HTML com Jinja2 ---
 # Template para gerar o HTML, o que é mais limpo e seguro.
 # As variáveis entre {{ }} são preenchidas pelo Flask.
+
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="5">
+    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    
     <title>Flask File Server</title>
     <link rel='stylesheet' href={{ url_for('static', filename='style.css') }}>
     
@@ -75,6 +77,8 @@ HTML_TEMPLATE = """
 </html>
 """
 
+
+
 def get_items(path):
     """Retorna uma lista de arquivos e diretórios para um determinado caminho."""
     items = []
@@ -94,6 +98,8 @@ def get_items(path):
             
     return items
 
+
+
 def get_parent_directory(path):
     """Calcula o link para o diretório pai."""
     if not path:
@@ -101,13 +107,17 @@ def get_parent_directory(path):
     parent = os.path.dirname(path)
     return url_for('browse_path', path=parent)
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>', methods=['GET'])
+
+
+@app.route('/', defaults={'path': ''}) # permite listagem na raiz
+@app.route('/<path:path>', methods=['GET']) # permite listagem em qualquer subcaminho
 def browse_path(path):
     """Lida com requisições GET para navegar e listar arquivos/diretórios."""
     
     # Medida de segurança: garante que o caminho solicitado está dentro do diretório raiz
     full_path = os.path.join(ROOT_DIRECTORY, path)
+    
+    
     if not os.path.abspath(full_path).startswith(os.path.abspath(ROOT_DIRECTORY)):
         abort(403) # Proibido
 
@@ -125,7 +135,10 @@ def browse_path(path):
     parent_dir = get_parent_directory(path)
     return render_template_string(HTML_TEMPLATE, items=items, current_path=path, parent_dir=parent_dir)
 
-@app.route('/<path:path>', methods=['POST'])
+
+
+@app.route('/', defaults={'path': ''}, methods=['POST']) # permite POST na raiz
+@app.route('/<path:path>', methods=['POST']) # permite POST em qualquer subcaminho
 def handle_post(path):
     """Lida com requisições POST para criar, deletar e fazer upload."""
     
