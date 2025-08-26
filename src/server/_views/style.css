@@ -1,66 +1,150 @@
+/* --- Reset Global e Configurações do Body --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: sans-serif;
     background-color: #f0f0f0;
     color: #333;
-    padding: 20px;
 }
-header{
-    font-size: 1.5rem;
+
+/* --- Cabeçalho e Navegação --- */
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
-header nav{
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+header span {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+header nav {
     display: flex;
-    gap: 10px;
-    width: 40%;
+    gap: 15px;
 }
-header nav a{
-    font-size: 1.2rem;
-    padding:4px;
-    background: #fff;
-    border: 1px solid #ddd;
+
+header nav a {
+    font-size: 1rem;
+    padding: 8px 12px;
+    background-color: #555;
+    border: 1px solid #666;
+    border-radius: 4px;
+    transition: background-color 0.2s;
 }
-h1 {
-    font-size: larger;
+
+header nav a:hover {
+    background-color: #007bff;
+    text-decoration: none;
+}
+
+/* --- Conteúdo Principal --- */
+section {
+    padding: 1rem 2rem;
+}
+
+h1,
+h2 {
     color: #5a5a5a;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
+
+/* --- Lista de Arquivos --- */
 ul {
     list-style-type: none;
     padding: 0;
 }
+
 li {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     font-size: 1.2rem;
-    padding: 10px;
-    background: #fff;
-    border: 1px solid #ddd;
-    margin-bottom: 5px;
-}
-a {
-    display: inline-block;
-    color: #007bff;
-    text-decoration: none;
-    margin-right: 10px;
-}
-a:hover {
-    text-decoration: underline;
-}
-form {
-    display: inline-block;
-}
-button {
-    background: #ff4d4d;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 5px 10px;
-    margin-left: 10px;
-}
-.form-section{
     padding: 12px;
     background: #fff;
     border: 1px solid #ddd;
     margin-bottom: 5px;
+}
+
+li a {
+    flex-grow: 1; /* Faz o link ocupar o espaço disponível */
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+/* --- Formulários e Botões --- */
+.form-section {
+    margin-top: 2rem;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.form-section h2 {
+    margin-top: 0;
+    font-size: 1.3rem;
+}
+
+.form-section form {
+    margin-top: 1rem;
+}
+
+/* Estilo base para botões */
+button,
+input[type=submit] {
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+/* Botão de remover (vermelho) */
+li button {
+    background: #dc3545;
+}
+
+li button:hover {
+    background: #c82333;
+}
+
+/* Botões de submit (azul) */
+.form-section input[type=submit] {
+    background-color: #007bff;
+}
+
+.form-section input[type=submit]:hover {
+    background-color: #0069d9;
+}
+
+/* Inputs maiores */
+.form-section input[type=text] {
+    padding: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    * {
+        font-size: x-large;
+    }
 }
