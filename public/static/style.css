@@ -119,6 +119,21 @@ input[type=submit] {
     font-size: 0.9rem;
     transition: background-color 0.2s;
 }
+input[type="file"]::file-selector-button
+{
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+input[type="file"]::file-selector-button:active
+{
+    background-color: #dedede;
+}
+
+
 
 /* Botão de remover (vermelho) */
 li button {
