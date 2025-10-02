@@ -7,15 +7,17 @@ from flask_cors import CORS # Importar a biblioteca CORS
 # Altere estas variáveis para configurar seu servidor
 HOST_ = '0.0.0.0'
 PORT_ = 8082
-# O diretório que o Flask irá servir.
-# Por segurança, o servidor só permitirá acesso a arquivos dentro deste diretório.
-print("Diretório atual:", os.getcwd())
-ROOT_DIRECTORY = os.path.abspath(os.path.join(os.getcwd(), "public", "src", "server"))
+
+# O diretório que o Flask irá servir. # Por segurança, o servidor só permitirá acesso a arquivos dentro deste diretório.
+
+ROOT_DIRECTORY = os.path.abspath(os.path.join(os.getcwd(), "public/src/server"))
 # ROOT_DIRECTORY = os.path.abspath("D:/VIDEOS")
+
 
 app = Flask(__name__)
 CORS(app) # Habilitar CORS para o aplicativo Flask
 
+print("Diretório atual:", os.getcwd())
 
 # --- Template HTML com Jinja2 ---
 # Template para gerar o HTML, o que é mais limpo e seguro.
@@ -133,6 +135,8 @@ def browse_path(path):
     # Se for um diretório, lista seu conteúdo
     items = get_items(path)
     parent_dir = get_parent_directory(path)
+
+    # Renderiza outras pastas fora a root
     return render_template_string(HTML_TEMPLATE, items=items, current_path=path, parent_dir=parent_dir)
 
 
